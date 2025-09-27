@@ -2,6 +2,12 @@
    <a href="https://github.com/zangjiucheng/Voice-Notes">
       <img src="https://img.shields.io/github/stars/zangjiucheng/Voice-Notes?style=social" alt="GitHub stars">
    </a>
+   <a href="https://github.com/zangjiucheng/Voice-Notes/actions/workflows/test.yml">
+      <img src="https://img.shields.io/github/actions/workflow/status/zangjiucheng/Voice-Notes/test.yml?branch=main&label=test&logo=github" alt="Test Status">
+   </a>
+   <a href="https://pypi.org/project/voice-notes/">
+      <img src="https://img.shields.io/pypi/v/voice-notes?label=PyPI%20Release&logo=pypi" alt="PyPI Release">
+   </a>
    <a href="https://github.com/zangjiucheng/Voice-Notes/blob/main/LICENSE">
       <img src="https://img.shields.io/github/license/zangjiucheng/Voice-Notes" alt="License">
    </a>
