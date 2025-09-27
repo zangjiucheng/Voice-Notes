@@ -7,7 +7,7 @@
    </a>
    <br>
    <a href="https://www.python.org/">
-      <img src="https://img.shields.io/badge/Python-3.8+-3776AB?style=flat&logo=python&logoColor=white" alt="Python Version">
+      <img src="https://img.shields.io/badge/Python-3.9+-3776AB?style=flat&logo=python&logoColor=white" alt="Python Version">
    </a>
    <a href="https://pypi.org/project/PyQt6/">
       <img src="https://img.shields.io/badge/PyQt6-6.0+-41CD52?style=flat&logo=qt&logoColor=white" alt="PyQt6">
@@ -92,7 +92,7 @@ voice-notes/
 ## Installation
 
 ### Prerequisites
-- Python 3.8 or higher
+- Python 3.9 or higher
 - pip package manager
 
 ### Install from PyPI (Recommended)
