@@ -19,3 +19,7 @@ AUDIO_EXTS = {".wav", ".mp3", ".m4a", ".aac", ".flac", ".ogg", ".aiff", ".aif"}
 # Recording settings
 DEFAULT_SAMPLERATE = 48000
 DEFAULT_CHANNELS = 1
+
+# Translation settings
+# Set the default target language for translation (e.g., 'en' for English, 'zh-CN' for Chinese, 'es' for Spanish)
+DEFAULT_TRANSLATION_TARGET = "en"

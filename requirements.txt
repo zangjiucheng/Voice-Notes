@@ -14,3 +14,6 @@ pydub
 soundfile
 sounddevice 
 soundfile
+
+# Translation
+deep-translator

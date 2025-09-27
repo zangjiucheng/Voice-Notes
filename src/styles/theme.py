@@ -517,6 +517,20 @@ QGroupBox[class="glass"] QTextEdit[objectName="transcription_display"]:focus {
   background: rgba(255, 255, 255, 1.0);
 }
 
+QGroupBox[class="glass"] QLabel[objectName="translation_label"] {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(200, 200, 200, 0.6);
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+QGroupBox[class="glass"] QLabel[objectName="translation_label"]:focus {
+  border: 2px solid rgba(77, 140, 255, 0.6);
+  background: rgba(255, 255, 255, 1.0);
+}
+
 QGroupBox[class="glass"] QLabel[objectName="transcription_label"] {
   font-size: 13px;
   font-weight: 600;
@@ -526,6 +540,18 @@ QGroupBox[class="glass"] QLabel[objectName="transcription_label"] {
     stop:0 rgba(16, 185, 129, 0.12),
     stop:1 rgba(5, 150, 105, 0.08));
   border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 10px;
+}
+
+QGroupBox[class="glass"] QLabel[objectName="translation_label_header"] {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  padding: 6px 12px;
+  background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgba(234, 179, 8, 0.12),
+    stop:1 rgba(202, 138, 4, 0.08));
+  border: 1px solid rgba(234, 179, 8, 0.2);
   border-radius: 10px;
 }
 

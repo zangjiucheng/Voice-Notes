@@ -11,6 +11,26 @@ from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PyQt6.QtWidgets import QStyle
 from ..utils.helpers import hhmmss
 from ..core.transcription import TranscriptionManager
+from ..core.translation import TranslationManager
+from ..core.config import DEFAULT_TRANSLATION_TARGET
+
+class ClickableTextEdit(QTextEdit):
+    word_selected = pyqtSignal(str)
+    
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setReadOnly(True)
+        self.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+    
+    def mousePressEvent(self, event):
+        super().mousePressEvent(event)
+        if event.button() == Qt.MouseButton.LeftButton:
+            cursor = self.cursorForPosition(event.pos())
+            cursor.select(QTextCursor.SelectionType.WordUnderCursor)
+            self.setTextCursor(cursor)
+            selected_text = cursor.selectedText().strip()
+            if selected_text:
+                self.word_selected.emit(selected_text)
 
 class PlayerWidget(QGroupBox):
     position_changed = pyqtSignal(int)  # position in seconds
@@ -30,10 +50,21 @@ class PlayerWidget(QGroupBox):
         self.transcription_manager = TranscriptionManager()
         self.current_audio_path = None
         
+        # Translation setup
+        self.translation_manager = TranslationManager(target_lang=DEFAULT_TRANSLATION_TARGET)
+        
         self._setup_ui()
         self._connect_signals()
         
         self._updating_slider = False
+    
+    def set_translation_target(self, target_lang: str):
+        """Set the target language for translation"""
+        self.translation_manager.set_target_language(target_lang)
+    
+    def get_translation_target(self) -> str:
+        """Get the current target language for translation"""
+        return self.translation_manager.target_lang
     
     def _setup_ui(self):
         # Title and play button
@@ -54,12 +85,18 @@ class PlayerWidget(QGroupBox):
         self.lbl_time.setObjectName("lbl_time")  # For QSS styling
         
         # Transcription display
-        self.transcription_display = QTextEdit()
+        self.transcription_display = ClickableTextEdit()
         self.transcription_display.setMaximumHeight(500)
         self.transcription_display.setMinimumHeight(50)
         self.transcription_display.setPlaceholderText("Load an audio file and transcribe it in the Notes tab to see synchronized text here...")
-        self.transcription_display.setReadOnly(True)
         self.transcription_display.setObjectName("transcription_display")  # For QSS styling
+        
+        # Translation display
+        self.translation_label = QLabel("Double click a word to see its translation")
+        self.translation_label.setObjectName("translation_label")  # For QSS styling
+        self.translation_label.setWordWrap(True)
+        self.translation_label.setMaximumHeight(100)
+        self.translation_label.setMinimumHeight(30)
         
         # Speed and volume controls
         self.speed_combo = QComboBox()
@@ -94,10 +131,16 @@ class PlayerWidget(QGroupBox):
         transcription_label.setFixedHeight(35)
         transcription_label.setObjectName("transcription_label")  # For QSS styling
         
+        translation_label = QLabel("🌐 Translation")
+        translation_label.setFixedHeight(35)
+        translation_label.setObjectName("translation_label_header")  # For QSS styling
+        
         transcription_layout = QVBoxLayout()
         transcription_layout.setSpacing(6)
         transcription_layout.addWidget(transcription_label)
         transcription_layout.addWidget(self.transcription_display)
+        transcription_layout.addWidget(translation_label)
+        transcription_layout.addWidget(self.translation_label)
         
         # Bottom section: speed and volume controls
         speed_label = QLabel("🏃 Speed")
@@ -134,6 +177,9 @@ class PlayerWidget(QGroupBox):
         self.player.positionChanged.connect(self._on_position_changed)
         self.player.durationChanged.connect(self._on_duration_changed)
         self.player.playbackStateChanged.connect(self._on_state_changed)
+        
+        # Transcription signals
+        self.transcription_display.word_selected.connect(self.translate_word)
     
     def load_audio(self, file_path: str):
         """Load audio file into player"""
@@ -148,6 +194,9 @@ class PlayerWidget(QGroupBox):
         # Clear transcription display immediately when loading new audio
         self.transcription_display.setPlainText("")
         self.transcription_manager.words_index = None
+        
+        # Clear translation
+        self.translation_label.setText("")
         
         self.player.setSource(QUrl.fromLocalFile(file_path))
         self.player.stop()
@@ -182,6 +231,26 @@ class PlayerWidget(QGroupBox):
                     <p style="margin: 5px 0 0 0; font-size: 12px;">Switch to the Notes tab and click "🤖 Start Transcription" to generate word-level timestamps for this audio.</p>
                 </div>
             """)
+    
+    def translate_word(self, word: str):
+        """Translate the selected word and display it"""
+        if not self.translation_manager.is_available():
+            self.translation_label.setText("Translation not available (deep-translator not installed)")
+            return
+        
+        if not word.strip():
+            self.translation_label.setText("")
+            return
+        
+        try:
+            # Translate to English (assuming the transcription is in another language)
+            result = self.translation_manager.translate_text(word)
+            if result:
+                self.translation_label.setText(f"{word} → {result}")
+            else:
+                self.translation_label.setText("")
+        except Exception as e:
+            self.translation_label.setText(f"Translation failed: {str(e)}")
     
     def _display_transcription(self):
         """Display the full transcription text"""
