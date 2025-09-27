@@ -30,9 +30,9 @@ A sophisticated audio recording, playback, and transcription application built w
 ## Project Structure
 
 ```
-transcribe-note/
-├── main.py                      # Application entry point
-├── src/
+voice-notes/
+├── main.py                      # Application entry point (for development)
+├── voice_notes/                 # Main package
 │   ├── __init__.py
 │   ├── app.py                   # Application core and initialization
 │   ├── core/                    # Business logic and services
@@ -66,6 +66,7 @@ transcribe-note/
 ├── outputs/                     # Notes and transcription files (auto-created)
 ├── session_media/               # Temporary session files
 ├── requirements.txt             # Python dependencies
+├── pyproject.toml               # Package configuration
 ├── README.md                    # This file
 ├── LICENSE                      # MIT License
 ├── .gitignore                  # Git ignore rules
@@ -94,9 +95,26 @@ transcribe-note/
 - Python 3.8 or higher
 - pip package manager
 
-### Install Dependencies
+### Install from PyPI (Recommended)
 
-**Using pip:**
+```bash
+pip install voice-notes
+```
+
+Then run:
+```bash
+voice-notes
+```
+
+### Install from Source
+
+**Clone the repository:**
+```bash
+git clone https://github.com/zangjiucheng/Voice-Notes.git
+cd Voice-Notes
+```
+
+**Install dependencies:**
 ```bash
 pip install -r requirements.txt
 ```
@@ -125,6 +143,11 @@ pip install pyobjc-framework-Cocoa  # For native macOS vibrancy effects
 ### Getting Started
 
 **Launch the application:**
+```bash
+voice-notes
+```
+
+**Or from source:**
 ```bash
 python main.py
 ```
@@ -234,7 +257,8 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 2. Create a virtual environment: `python -m venv venv`
 3. Activate the environment: `source venv/bin/activate` (Linux/macOS) or `venv\Scripts\activate` (Windows)
 4. Install dependencies: `pip install -r requirements.txt`
-5. Run the application: `python main.py`
+5. Install in development mode: `pip install -e .`
+6. Run the application: `voice-notes`
 
 ### Code Style
 - Follow PEP 8 guidelines

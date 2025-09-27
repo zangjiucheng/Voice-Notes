@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "voice-notes"
+version = "0.1.0"
+description = "A voice recording and transcription application"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+]
+dependencies = [
+    "faster-whisper",
+    "PyQt6",
+    "PyQt6-Qt6",
+    "PyQt6-sip",
+    "numpy",
+    "pydub",
+    "soundfile",
+    "sounddevice",
+    "deep-translator",
+]
+
+[project.urls]
+Homepage = "https://github.com/zangjiucheng/Voice-Notes"
+Repository = "https://github.com/zangjiucheng/Voice-Notes"
+
+[project.scripts]
+voice-notes = "voice_notes.app:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["voice_notes*"]
+
+[tool.setuptools.package-dir]
+"" = "."

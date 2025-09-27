@@ -6,10 +6,10 @@ Voice Notes Application - Main Entry Point
 import sys
 from pathlib import Path
 
-# Add src directory to Python path
-sys.path.insert(0, str(Path(__file__).parent / "src"))
+# Add voice_notes directory to Python path
+sys.path.insert(0, str(Path(__file__).parent / "voice_notes"))
 
-from src.app import VoiceNotesApp
+from voice_notes.app import VoiceNotesApp
 
 def main():
     app = VoiceNotesApp()
