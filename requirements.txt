@@ -1,0 +1,16 @@
+# Core transcription engine
+faster-whisper
+
+# Web UI for note-taking and playback
+PyQt6 
+PyQt6-Qt6 
+PyQt6-sip 
+
+# Numerical computations
+numpy
+
+# Audio handling
+pydub
+soundfile
+sounddevice 
+soundfile
