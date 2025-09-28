@@ -712,6 +712,29 @@ QWidget QLabel[objectName="words_status"] {
   min-height: 20px;
 }
 
+QWidget QProgressBar[objectName="progress_bar"] {
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  height: 16px;
+  text-align: center;
+}
+
+QWidget QProgressBar[objectName="progress_bar"]::chunk {
+  background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+    stop:0 rgba(16, 185, 129, 0.8),
+    stop:0.7 rgba(34, 197, 94, 0.8),
+    stop:1 rgba(5, 150, 105, 0.8));
+  border-radius: 10px;
+}
+
+QWidget QLabel[objectName="progress_label"] {
+  font-size: 12px;
+  color: #059669;
+  font-style: italic;
+  padding: 4px 0px;
+}
+
 /* LibraryWidget specific styles */
 QWidget QLabel[objectName="library_header"] {
   font-size: 18px;
