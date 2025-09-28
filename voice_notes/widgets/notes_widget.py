@@ -59,6 +59,7 @@ class NotesWidget(QFrame):
         controls_layout.setSpacing(8)
         
         self.chk_anchor_nearest = QCheckBox("Auto-anchor to current time")
+        self.chk_anchor_nearest.setChecked(True)  # Enable by default
         
         self.btn_add_note = QPushButton("Add Note")
         self.btn_add_note.setObjectName("btn_add_note")  # For QSS styling
@@ -183,12 +184,14 @@ class NotesWidget(QFrame):
         anchor_time = extract_time_from_text(text)
         
         # Use current playback time if auto-anchor is enabled and no timestamp in text
-        if (anchor_time is None and 
-            self.chk_anchor_nearest.isChecked() and 
-            hasattr(self, '_get_current_time')):
+        if (anchor_time is None and self.chk_anchor_nearest.isChecked()):
             
-            current_time = self._get_current_time()
-            anchor_time = current_time
+            try:
+                current_time = self._get_current_time()
+                if current_time is not None:
+                    anchor_time = current_time
+            except Exception:
+                pass  # Silently fail if callback doesn't work
         
         # Add note
         self.notes_manager.add_note(text, anchor_time)

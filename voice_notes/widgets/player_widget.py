@@ -21,6 +21,11 @@ class ClickableTextEdit(QTextEdit):
         super().__init__(parent)
         self.setReadOnly(True)
         self.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        
+        # Improve font for better readability
+        font = QFont("Segoe UI", 17)  # Modern, readable font at larger size
+        font.setStyleHint(QFont.StyleHint.System)
+        self.setFont(font)
     
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
@@ -87,8 +92,8 @@ class PlayerWidget(QGroupBox):
         
         # Transcription display
         self.transcription_display = ClickableTextEdit()
-        self.transcription_display.setMaximumHeight(500)
-        self.transcription_display.setMinimumHeight(50)
+        self.transcription_display.setMaximumHeight(1000)
+        self.transcription_display.setMinimumHeight(400)
         self.transcription_display.setPlaceholderText("Load an audio file and transcribe it in the Notes tab to see synchronized text here...")
         self.transcription_display.setObjectName("transcription_display")  # For QSS styling
         
@@ -278,6 +283,17 @@ class PlayerWidget(QGroupBox):
                 self.translation_label.setText("")
         except Exception as e:
             self.translation_label.setText(f"Translation failed: {str(e)}")
+        
+        # Jump to the word's position in the audio
+        if self.transcription_manager.words_index:
+            # Clean the selected word by removing common punctuation
+            clean_word = word.strip('.,!?;:"').strip()
+            for word_data in self.transcription_manager.words_index:
+                transcription_word = word_data.get("word", "").strip()
+                if transcription_word == clean_word:
+                    start_time = word_data.get("start", 0)
+                    self.jump_to_time(start_time)
+                    break
     
     def _display_transcription(self):
         """Display the full transcription text"""
@@ -339,6 +355,9 @@ class PlayerWidget(QGroupBox):
                 viewport_height = self.transcription_display.viewport().height()
                 center_pos = cursor_rect.top() - (viewport_height // 2) + (cursor_rect.height() // 2)
                 scrollbar.setValue(scrollbar.value() + center_pos)
+        
+        # Clear any visible text selection
+        self.transcription_display.setTextCursor(QTextCursor())
     
     def toggle_play(self):
         """Toggle play/pause"""
@@ -352,6 +371,13 @@ class PlayerWidget(QGroupBox):
         if self.player.duration() > 0:
             position = int(slider_val / 1000 * self.player.duration())
             self.player.setPosition(position)
+    
+    def jump_to_time(self, seconds: float):
+        """Jump to specific time in seconds"""
+        position_ms = int(seconds * 1000)
+        self.player.setPosition(position_ms)
+        # Ensure UI updates even when paused
+        self._on_position_changed(position_ms)
     
     def apply_speed(self):
         """Apply playback speed"""

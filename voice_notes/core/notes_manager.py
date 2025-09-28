@@ -49,6 +49,10 @@ class NotesManager:
             return self.notes.pop(index)
         return None
     
+    def clear_all_notes(self):
+        """Clear all notes"""
+        self.notes = []
+    
     @staticmethod
     def note_to_line(note: Dict) -> str:
         """Convert note dict to display string"""
