@@ -598,9 +598,57 @@ QGroupBox[class="glass"] QSlider[objectName="volume_slider"]::handle:horizontal:
   background: rgba(236, 72, 153, 1.0);
 }
 
-QGroupBox[class="glass"] QSlider[objectName="volume_slider"]::sub-page:horizontal {
-  background: rgba(236, 72, 153, 0.4);
-  border-radius: 3px;
+QGroupBox[class="glass"] QLabel[objectName="lang_label"] {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  padding: 6px 12px;
+  background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgba(234, 179, 8, 0.12),
+    stop:1 rgba(202, 138, 4, 0.08));
+  border: 1px solid rgba(234, 179, 8, 0.2);
+  border-radius: 10px;
+}
+
+QGroupBox[class="glass"] QComboBox[objectName="lang_combo"] {
+  padding: 8px 12px;
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  max-width: 200px;
+}
+
+QGroupBox[class="glass"] QComboBox[objectName="lang_combo"]:focus {
+  border: 2px solid rgba(234, 179, 8, 0.5);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+QGroupBox[class="glass"] QComboBox[objectName="lang_combo"]::drop-down {
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 0 8px 8px 0;
+  width: 25px;
+}
+
+QGroupBox[class="glass"] QComboBox[objectName="lang_combo"]::down-arrow {
+  image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNiA2TDExIDEiIHN0cm9rZT0iIzVhNmM3ZCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+);
+  width: 12px;
+  height: 8px;
+}
+
+QGroupBox[class="glass"] QComboBox[objectName="lang_combo"]::down-arrow:hover {
+  image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNiA2TDExIDEiIHN0cm9rZT0iIzk3NzEwZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+);
+}
+
+QGroupBox[class="glass"] QComboBox[objectName="lang_combo"] QAbstractItemView {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(234, 179, 8, 0.3);
+  border-radius: 8px;
+  selection-background-color: rgba(234, 179, 8, 0.2);
+  selection-color: #92400e;
+  padding: 4px;
 }
 
 /* TranscriptionWidget specific styles */

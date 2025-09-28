@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import QStyle
 from ..utils.helpers import hhmmss
 from ..core.transcription import TranscriptionManager
 from ..core.translation import TranslationManager
-from ..core.config import DEFAULT_TRANSLATION_TARGET
+from ..core.config import DEFAULT_TRANSLATION_TARGET, TRANSLATION_OPTIONS
 
 class ClickableTextEdit(QTextEdit):
     word_selected = pyqtSignal(str)
@@ -62,9 +62,10 @@ class PlayerWidget(QGroupBox):
         """Set the target language for translation"""
         self.translation_manager.set_target_language(target_lang)
     
-    def get_translation_target(self) -> str:
-        """Get the current target language for translation"""
-        return self.translation_manager.target_lang
+    def get_current_language_name(self) -> str:
+        """Get the display name of the currently selected language"""
+        lang_code = self.get_translation_target()
+        return self.language_options.get(lang_code, "Unknown")
     
     def _setup_ui(self):
         # Title and play button
@@ -97,6 +98,19 @@ class PlayerWidget(QGroupBox):
         self.translation_label.setWordWrap(True)
         self.translation_label.setMaximumHeight(100)
         self.translation_label.setMinimumHeight(30)
+        
+        # Language options dictionary
+        self.language_options = TRANSLATION_OPTIONS
+        
+        # Language selection dropdown
+        self.lang_combo = QComboBox()
+        for code, name in self.language_options.items():
+            self.lang_combo.addItem(f"{name} ({code})", code)
+        # Set default language based on config
+        default_lang_name = self.language_options.get(DEFAULT_TRANSLATION_TARGET, "English")
+        self.lang_combo.setCurrentText(f"{default_lang_name} ({DEFAULT_TRANSLATION_TARGET})")
+        self.lang_combo.setMaximumWidth(200)
+        self.lang_combo.setObjectName("lang_combo")  # For QSS styling
         
         # Speed and volume controls
         self.speed_combo = QComboBox()
@@ -135,11 +149,21 @@ class PlayerWidget(QGroupBox):
         translation_label.setFixedHeight(35)
         translation_label.setObjectName("translation_label_header")  # For QSS styling
         
+        # Language selection layout
+        lang_layout = QHBoxLayout()
+        lang_layout.setSpacing(8)
+        lang_label = QLabel("Target:")
+        lang_label.setObjectName("lang_label")  # For QSS styling
+        lang_layout.addWidget(lang_label)
+        lang_layout.addWidget(self.lang_combo)
+        lang_layout.addStretch()
+        
+        
         transcription_layout = QVBoxLayout()
         transcription_layout.setSpacing(6)
         transcription_layout.addWidget(transcription_label)
         transcription_layout.addWidget(self.transcription_display)
-        transcription_layout.addWidget(translation_label)
+        transcription_layout.addLayout(lang_layout)
         transcription_layout.addWidget(self.translation_label)
         
         # Bottom section: speed and volume controls
@@ -180,6 +204,9 @@ class PlayerWidget(QGroupBox):
         
         # Transcription signals
         self.transcription_display.word_selected.connect(self.translate_word)
+        
+        # Language selection signal
+        self.lang_combo.currentTextChanged.connect(self._on_language_changed)
     
     def load_audio(self, file_path: str):
         """Load audio file into player"""
@@ -366,9 +393,9 @@ class PlayerWidget(QGroupBox):
         
         self.btn_play.setIcon(self.style().standardIcon(icon))
     
-    def jump_to_time(self, seconds: float):
-        """Jump to specific time in seconds"""
-        if self.player.duration() > 0:
-            self.player.setPosition(int(seconds * 1000))
-            if self.player.playbackState() != QMediaPlayer.PlaybackState.PlayingState:
-                self.player.play()
+    def _on_language_changed(self, lang_text: str):
+        """Handle language selection change"""
+        # Get language code from combo box data
+        lang_code = self.lang_combo.currentData()
+        if lang_code:
+            self.set_translation_target(lang_code)
